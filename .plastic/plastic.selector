@@ -1,0 +1,4 @@
+repository "memo_demo@wechat_os_qy01ywrnucm8fc6afkh5suqiu@cloud.cn"
+  path "/"
+    br "/main"
+    co "/main"
