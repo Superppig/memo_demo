@@ -90,5 +90,9 @@ public class CommonBullet : Bullet
             other.GetComponent<Obstacle>().Hit();
             isDead = true;
         }
+        if (other.gameObject.CompareTag("Wall"))
+        {
+            isDead = true;
+        }
     }
 }

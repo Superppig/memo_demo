@@ -48,9 +48,5 @@ public class Bullet : MonoBehaviour
         Vector2 vel = dir.normalized * speed;
         myRigidbody2D.velocity = vel;
     }
-
-    private void OnTriggerEnter(Collider other)
-    {
-        throw new NotImplementedException();
-    }
+    
 }

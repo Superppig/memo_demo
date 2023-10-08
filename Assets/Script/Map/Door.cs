@@ -13,9 +13,9 @@ public class Door : MonoBehaviour
     //逻辑变量
     public bool isLeave;
 
-    public bool hasLock;//是否为锁着的门
-    public bool isOpen;//是否打开
-    public bool isLock;//是否锁着
+    public bool hasLock=false;//是否为锁着的门
+    public bool isOpen=true;//是否打开
+    public bool isLock=false;//是否锁着
 
     public bool hasEnemy;//是否有敌人
 
@@ -36,9 +36,6 @@ public class Door : MonoBehaviour
         locked = transform.Find("locked").GetComponent<SpriteRenderer>();
         keySpr = transform.Find("key").GetComponent<SpriteRenderer>();
         keyAnim = keySpr.GetComponent<Animator>();
-        isOpen = true;
-        hasLock = false;
-        isLock = false;
         keySpr.enabled = false;
         keyAnim.enabled = false;
     }
@@ -119,8 +116,6 @@ public class Door : MonoBehaviour
             {
                 if (player.keyCount>0)
                 {
-                    isLock = false;
-                    isOpen = true;
                     player.keyCount--;
                     StartCoroutine(OpenWithKey());
                 }

@@ -60,6 +60,7 @@ public class Clotty : Enemy
             oneBullet.speed=fireSpeed;
             oneBullet.length = fireLength;
             oneBullet.damage = fireDamage;
+            oneBullet.isMoveAX = true;
             if (i==0)
                 oneBullet.dirAx = new Vector2Int(1, 0);
             else if (i==1)

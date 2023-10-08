@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Mathematics;
 using Unity.VisualScripting;
 using UnityEngine;
 using Random = UnityEngine.Random;
@@ -18,17 +19,18 @@ public class RoundWorm : Enemy
     public float fireSpeed;
     public float fireLength;
     public float fireDamage;    //移动相关参数
-    private bool isMove;
     private float moveTime = 1f;
+    private float AnimTime = 1f;
+    private bool isOut=true;
     private float time;
+    private Vector2 range = new Vector2(6.3125f,3.875f);
     
     // Start is called before the first frame update
     void Start()
     {
-        isMove = false;
+        StartThings();
         time = 0f;
-        
-        player = GameObject.FindGameObjectWithTag("Player");
+        player = GameObject.FindGameObjectWithTag("Player").GetComponent<Player_Controller>();
         playTrans = player.transform;
         myRigidbody = GetComponent<Rigidbody2D>();
 
@@ -50,76 +52,67 @@ public class RoundWorm : Enemy
     void Move()
     {
         time += Time.deltaTime;
-        if (time>moveTime)
+        if (time > moveTime)
         {
-            if (isMove)
+            if (isOut)
             {
-                isMove = false;
-                Hide();
-
+                Anim();
+                isOut = false;
             }
-            else
-            {
-                isMove = true;
-                Out();
-
-            }
-            time = 0f;
         }
     }
 
-    void Hide()
+    void Anim()
     {
+        headSprite.enabled = true;
+        bodySprite.enabled = true;
+        headAnim.enabled = true;
         bodyAnim.enabled = true;
-        headAnim.SetBool("isOut",false);
-        headAnim.SetBool("Attack",false);
-        SetAnimTime(headAnim,1f);
-        bodyAnim.SetBool("isOut",false);
-        SetAnimTime(bodyAnim,1f);
-    }
-    void Out()
-    {
         headAnim.SetBool("isOut",true);
-        headAnim.SetBool("Attack",false);
-        SetAnimTime(headAnim,0.6f);
         bodyAnim.SetBool("isOut",true);
-        SetAnimTime(bodyAnim,0.6f);
-        
-        StartCoroutine(StartOut());
-    }
-
-    IEnumerator StartOut()
-    {
-        yield return new WaitForSeconds(0.6f);
-        Fire();
-    }
-    void Fire()
-    { 
-        headAnim.SetBool("isOut",true);
-        headAnim.SetBool("Attack",true);
-        SetAnimTime(headAnim,0.4f);
-        bodyAnim.enabled = false;
         StartCoroutine(StartFire());
     }
 
     IEnumerator StartFire()
     {
-        yield return new WaitForSeconds(0.2f);
-        EnemyBullet oneBullet = Instantiate(myBullet, transform);
-        oneBullet.transform.SetParent(transform);
+        yield return new WaitForSeconds(AnimTime);
+        Fire();
+        headAnim.SetBool("isOut",false);
+        bodyAnim.SetBool("isOut",false);
+        StartCoroutine(StartIn());
+    }
+
+    IEnumerator StartIn()
+    {
+        yield return new WaitForSeconds(AnimTime);
+        headSprite.enabled = false;
+        bodySprite.enabled = false;
+        headAnim.enabled = false;
+        bodyAnim.enabled = false;
+        time = 0;
+        isOut = true;
+        RandomMove();
+    }
+    void RandomMove()
+    {
+        Vector2 place = player.whichRoom;
+        Vector2 currentPlace = new Vector2(place.x * 20 + Random.Range(-1 * range.x, range.x),
+            place.y * 20 + Random.Range(-1 * range.y, range.y));
+        transform.position = currentPlace;
+    }
+
+    void Fire()
+    {
+        EnemyBullet oneBullet = Instantiate(myBullet, transform.position, quaternion.identity);
+        oneBullet.isMoveAX = false;
+        oneBullet.dir = player.transform.position - transform.position;
         oneBullet.speed = fireSpeed;
         oneBullet.length = fireLength;
         oneBullet.damage = fireDamage;
-        oneBullet.dir=playTrans.position-transform.position;
-        oneBullet.isMoveAX = false;
     }
 
-    void SetAnimTime(Animator animator, float Time)
-    { 
-        float currentTime = animator.GetCurrentAnimatorStateInfo(0).length;
-        float speed = time / currentTime;
-        animator.speed *= speed;
-    }
+
+    
     public override void Dead()
     {
         if (health <= 0)

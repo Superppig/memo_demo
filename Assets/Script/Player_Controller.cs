@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.PlayerLoop;
+using UnityEngine.SceneManagement;
 
 public class Player_Controller : MonoBehaviour
 {
@@ -32,7 +33,7 @@ public class Player_Controller : MonoBehaviour
     
     private Vector2Int bulletDir;
 
-    private Rigidbody2D myRigidbody;
+    public Rigidbody2D myRigidbody;
     private Collider2D mycollider;
     public bool isAuto;
     
@@ -82,24 +83,22 @@ public class Player_Controller : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (isProp2)
-        {
-            bodyAnim.enabled = false;
-            bodySprite.enabled = false;
-            mycollider.enabled = false;
-        }
-        else
-        {
-            bodyAnim.enabled = true;
-            bodySprite.enabled = true;
-            mycollider.enabled = true;
-        }
         PropCon();
         Run();
         Shoot();
         AnimController();
         UseBomb();
-
+        if (isProp2)
+        {
+            bodyAnim.enabled = false;
+            bodySprite.enabled = false;
+        }
+        else
+        {
+            bodyAnim.enabled = true;
+            bodySprite.enabled = true;
+        }
+        Die();
     }
 
 
@@ -333,11 +332,51 @@ public class Player_Controller : MonoBehaviour
         }
     }
 
+    void Die()
+    {
+        if (health<=0)
+        {
+            headAnim.enabled = false;
+            headSprite.enabled = false;
+            bodyAnim.enabled = false;
+            bodySprite.enabled = false;
+            mySprite.enabled = true;
+            myAnim.enabled = true;
+            StartCoroutine(StartDie());
+        }
+    }
+
+    IEnumerator StartDie()
+    {
+        myAnim.SetTrigger("Die");
+        yield return new WaitForSeconds(0.3f);
+        //死亡场景
+        SceneManager.LoadScene("Scenes/Dead");
+    }
+
     private void OnCollisionEnter2D(Collision2D other)
     {
         if (other.gameObject.CompareTag("Enemy"))
         {
             Hurt(other.gameObject.GetComponent<Enemy>().damage);
+        }
+        if (isProp2)
+        {
+            if (other.gameObject.CompareTag("Obstacle"))
+            {
+                mycollider.isTrigger = true;
+            }
+        }
+    }
+
+    private void OnTriggerExit2D(Collider2D other)
+    {
+        if (isProp2)
+        {
+            if (other.gameObject.CompareTag("Obstacle"))
+            {
+                mycollider.isTrigger = false;
+            }
         }
     }
 }

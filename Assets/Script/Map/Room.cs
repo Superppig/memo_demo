@@ -24,9 +24,12 @@ public class Room : MonoBehaviour
     private Queue<Door> _doors;
     private bool hasDetect;
     public bool hasEnemy;
+    private bool hasDrop = true;
 
     private float height = 7.3125f;//长度
     private float width = 4.875f;//宽度
+    
+    public GameObject[] drops;
 
     void Start()
     {
@@ -36,6 +39,13 @@ public class Room : MonoBehaviour
         player = GameObject.FindGameObjectWithTag("Player").GetComponent<Player_Controller>();
         canmara = GameObject.FindGameObjectWithTag("MainCamera");
         playerTrans = player.transform;
+        Object[] loadedObjects = Resources.LoadAll("Perfabs/DroppedThings", typeof(GameObject));
+        
+        drops = new GameObject[loadedObjects.Length];
+        for (int i = 0; i < loadedObjects.Length; i++)
+        {
+            drops[i] = (GameObject)loadedObjects[i];
+        }
     }
 
 
@@ -48,6 +58,25 @@ public class Room : MonoBehaviour
             player.whichRoom = place;
             Detect();
             DoorCon();
+            if (!hasEnemy)
+            {
+                if(!hasDrop)
+                {
+                    Drop();
+                    hasDrop = true;
+                }
+            }
+        }
+    }
+
+    void Drop()
+    {
+        int n = Random.Range(1, 4);
+        for (int i = 0; i < n; i++)
+        {
+            Vector3 place = transform.position + new Vector3(Random.Range(-height + 1, height - 1),
+                Random.Range(-width + 1, width - 1), 0);
+            Instantiate(drops[Random.Range(0, drops.Length)], place, quaternion.identity);
         }
     }
 
@@ -94,12 +123,15 @@ public class Room : MonoBehaviour
 
     void EnemySpawn()
     {
-        int n = Random.Range(3, 7);
+        int n = Random.Range(3, 5);
         for (int i = 0; i < n; i++)
         {
             Vector3 place = transform.position + new Vector3(Random.Range(-height+1,height-1),Random.Range(-width+1,width-1),0);
-            Instantiate(enemies[Random.Range(0, enemies.Length - 1)], place, quaternion.identity);
+            Instantiate(enemies[Random.Range(0, enemies.Length)], place, quaternion.identity);
         }
+
+        hasEnemy = true;
+        hasDrop = false;
     }
 
     void DoorCon()

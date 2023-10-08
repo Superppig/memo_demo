@@ -19,7 +19,7 @@ public class MapSpawn : MonoBehaviour
         {0,0,0,0,0,0,0},
         {0,0,0,0,0,0,0},
         {0,0,1,0,4,0,0},
-        {0,1,2,1,1,0,0},
+        {0,4,2,1,1,0,0},
         {0,0,1,0,3,0,0},
         {0,0,0,0,0,0,0},
         {0,0,0,0,0,0,0}
@@ -102,7 +102,7 @@ public class MapSpawn : MonoBehaviour
                             downDoor = Instantiate(doorSpawn, doorSpawnPlace, Quaternion.Euler(0, 0, 0));
                             currenDoor.nextDoor = downDoor;
                             downDoor.nextDoor = currenDoor;//建立双向关系
-                            if (littleMap[i,j]==4)
+                            if (littleMap[i,j] == 4)
                             {
                                 downDoor.hasLock = true;
                                 downDoor.isLock = true;

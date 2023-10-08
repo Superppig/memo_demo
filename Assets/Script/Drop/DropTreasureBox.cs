@@ -32,7 +32,7 @@ public class DropTreasureBox : DropThing
         for (int i = 0; i < num; i++)
         {
             Vector2 place = (Vector2)transform.position + new Vector2(Random.Range(-1f, 1f), Random.Range(-1f, 1f)) ;
-            Instantiate(treasures[Random.Range(0,treasures.Length-1)],place,quaternion.identity);
+            Instantiate(treasures[Random.Range(0,treasures.Length)],place,quaternion.identity);
         }
         Destroy(gameObject);
     }

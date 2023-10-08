@@ -1379,9 +1379,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c40e3981df500314e980c11c2a27fcdc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  healthUp: 6
+  healthUp: 16
   speed: 5
-  health: 0
+  health: 16
   shootSpeed: 0.5
   bulletSpeed: 10
   fire_lenth: 5
@@ -1393,6 +1393,7 @@ MonoBehaviour:
   propType: 0
   whichRoom: {x: 0, y: 0}
   lastProp: 0
+  myRigidbody: {fileID: 0}
   isAuto: 0
 --- !u!50 &1727451929
 Rigidbody2D:

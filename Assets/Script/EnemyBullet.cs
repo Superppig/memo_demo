@@ -4,11 +4,10 @@ using UnityEngine;
 
 public class EnemyBullet : Bullet
 {
-    public bool isMoveAX;
+    public bool isMoveAX=true;
     // Start is called before the first frame update
     void Start()
     {
-        isMoveAX = true;
         deadTime = 0.51f;
         StartThings();
     }
@@ -44,7 +43,7 @@ public class EnemyBullet : Bullet
         Destroy(gameObject);
     }
 
-    private void OnTriggerEnter2D(Collider2D other)
+    private  void OnTriggerEnter2D(Collider2D other)
     {
         if (other.gameObject.CompareTag("Player"))
         {
@@ -55,6 +54,10 @@ public class EnemyBullet : Bullet
         if (other.gameObject.CompareTag("Obstacle"))
         {
             other.GetComponent<Obstacle>().Hit();
+            isDead = true;
+        }
+        if (other.gameObject.CompareTag("Wall"))
+        {
             isDead = true;
         }
     }
