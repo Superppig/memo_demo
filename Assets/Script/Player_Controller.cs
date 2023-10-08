@@ -54,7 +54,6 @@ public class Player_Controller : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        health = healthUp;
         isShoot = false;
         time = 0f;
         bulletDir=new Vector2Int(0,0);
@@ -62,6 +61,17 @@ public class Player_Controller : MonoBehaviour
         lastProp = 0;
         isProp2 = false;
         isAuto = false;
+        healthUp= PlayerPrefs.GetFloat("HealthUp");
+        health= PlayerPrefs.GetFloat("Health");
+        speed= PlayerPrefs.GetFloat("Speed");
+        shootSpeed=PlayerPrefs.GetFloat("ShootSpeed");
+        bulletSpeed= PlayerPrefs.GetFloat("BulletSpeed");
+        fire_lenth= PlayerPrefs.GetFloat("FireLength");
+        damage= PlayerPrefs.GetFloat("Damage");
+        bombCount= PlayerPrefs.GetInt("BombCount"); 
+        keyCount= PlayerPrefs.GetInt("KeyCount");
+        coinCount= PlayerPrefs.GetInt("CoinCount");
+        propType=PlayerPrefs.GetInt("PropType");
 
         myRigidbody = GetComponent<Rigidbody2D>();
         myAnim = GetComponent<Animator>();

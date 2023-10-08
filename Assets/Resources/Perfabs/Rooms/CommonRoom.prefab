@@ -89,6 +89,7 @@ MonoBehaviour:
   - {fileID: 6403400641548931860, guid: 09186e5ee34ca68419d18f04251c5090, type: 3}
   - {fileID: 985174779039068945, guid: 96349371d0b221842beae53fb3ccaf1d, type: 3}
   hasEnemy: 0
+  drops: []
 --- !u!1 &4589001839990260728
 GameObject:
   m_ObjectHideFlags: 0

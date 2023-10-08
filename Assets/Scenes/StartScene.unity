@@ -404,7 +404,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 91604022278e0004aa450c2588e1090e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  tag: {fileID: 178884915}
+  tag01: {fileID: 178884915}
   stateUp: 1
 --- !u!4 &336131568
 Transform:

@@ -22,7 +22,7 @@ public class PropStage : MonoBehaviour
             string a = string.Concat("Perfabs/Prop/Prop", i.ToString());
             props[i-1] = Resources.Load<GameObject>(a);
         }
-        currentProp = Random.Range(1, propsCount);
+        currentProp = Random.Range(1, propsCount+1);
         currentPropObj = Instantiate(props[currentProp-1],transform);
         isLeave = false;
     }
